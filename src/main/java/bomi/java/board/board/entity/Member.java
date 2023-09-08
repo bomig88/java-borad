@@ -1,22 +1,29 @@
 package bomi.java.board.board.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.ToString;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
+@Setter
+@Getter
 @ToString
 public class Member {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String email;
     @Column
     private String password;
 
+    public void patch(Member member) {
+        if (member.email != null) {
+            this.email = member.getEmail();
+        }
+        if (member.password != null) {
+            this.password = member.getPassword();
+        }
+    }
 }
