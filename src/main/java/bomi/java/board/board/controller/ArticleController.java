@@ -3,6 +3,7 @@ package bomi.java.board.board.controller;
 import bomi.java.board.board.dto.ArticleForm;
 import bomi.java.board.board.entity.Article;
 import bomi.java.board.board.service.ArticleService;
+import bomi.java.board.board.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ArticleController {
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping("/articles/new")
     public String newArticleForm() {
@@ -39,6 +42,7 @@ public class ArticleController {
         log.info("id = " + id);
 //        Optional<Article> articleEntity = articleRepository.findById(id);
         model.addAttribute("article", articleService.find(id));
+        model.addAttribute("commentDtos", commentService.comments(id));
         return "articles/show";
     }
 
