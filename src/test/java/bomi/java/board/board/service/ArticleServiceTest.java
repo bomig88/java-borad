@@ -18,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class ArticleServiceTest {
     @Autowired
     ArticleService articleService;
+    @Autowired
+    MemberService memberService;
 
     @Test
     void findAll() {
@@ -34,8 +36,8 @@ class ArticleServiceTest {
 
     @Test
     @Transactional
-    void create() {
-        ArticleForm dto = new ArticleForm(null, "test타이틀", "text컨텐츠!");
+    void create(){
+        ArticleForm dto = new ArticleForm(null, "test타이틀", "text컨텐츠!", 1L);
         Article article = articleService.create(dto);
         assertNotNull(article);
     }
@@ -43,8 +45,8 @@ class ArticleServiceTest {
     @Test
     void bulk_create() {
         List<ArticleForm> dtos = new ArrayList<ArticleForm>();
-        dtos.add(new ArticleForm(null, "1test", "111111111"));
-        dtos.add(new ArticleForm(null, "2test", "2222222222"));
+        dtos.add(new ArticleForm(null, "1test", "111111111", 1L));
+        dtos.add(new ArticleForm(null, "2test", "2222222222", 1L));
 
         List<Article> articles = articleService.bulk_create(dtos);
         assertNotNull(articles);
@@ -53,7 +55,7 @@ class ArticleServiceTest {
     @Test
     void update() {
         Long id = 1L;
-        ArticleForm dto = new ArticleForm(id, "update1", "update11111");
+        ArticleForm dto = new ArticleForm(id, "update1", "update11111", 1L);
         Article article = articleService.update(id, dto);
         assertNotNull(article);
     }

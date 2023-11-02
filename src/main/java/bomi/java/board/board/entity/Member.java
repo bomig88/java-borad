@@ -11,6 +11,7 @@ import lombok.*;
 @ToString
 public class Member {
     @Id
+    @Column(name="member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column

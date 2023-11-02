@@ -2,7 +2,9 @@ package bomi.java.board.board.service;
 
 import bomi.java.board.board.dto.ArticleForm;
 import bomi.java.board.board.entity.Article;
+import bomi.java.board.board.entity.Member;
 import bomi.java.board.board.repository.ArticleRepository;
+import bomi.java.board.board.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -18,6 +21,8 @@ import java.util.stream.Collectors;
 public class ArticleService {
     @Autowired
     private ArticleRepository articleRepository;
+    @Autowired
+    private MemberRepository memberRepository;
 
     public ArrayList<Article> findAll() {
         return articleRepository.findAll();
@@ -29,10 +34,16 @@ public class ArticleService {
 
     public Article create(ArticleForm dto) {
         Article article = dto.toEntity();
-        if (article.getId() != null) {
-            return null;
+        Optional<Member> member = memberRepository.findById(dto.getMemberId());
+        if (member.isPresent()) {
+            article.setMember(member.get());
+            if (article.getId() != null) {
+                return null;
+            } else {
+                return articleRepository.save(article);
+            }
         } else {
-            return articleRepository.save(article);
+            return null;
         }
     }
 

@@ -32,7 +32,7 @@ public class ArticleApiController {
     }
 
     @PostMapping("/api/articles")
-    public ResponseEntity<Article> create(@RequestBody ArticleForm dto) {
+    public ResponseEntity<Article> create(@RequestBody ArticleForm dto) throws Exception {
         Article article = articleService.create(dto);
         return (article == null) ?
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build() :
